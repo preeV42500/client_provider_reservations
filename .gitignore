@@ -1,0 +1,4 @@
+'reservations.db'
+.venv/
+__pycache__/
+venv/

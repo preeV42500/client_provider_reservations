@@ -1,0 +1,100 @@
+# swagger.yml
+
+openapi: 3.0.0
+info:
+  title: "Provider Reservation Flask REST API"
+  description: "An API that allows clients to reserve appointments with providers"
+  version: "1.0.0"
+servers:
+  - url: "/api"
+components:
+  schemas:
+    Availability:
+      type: object
+      properties:
+        firstname:
+          type: string
+          description: First name of the provider
+        lastname:
+          type: string
+          description: Last name of the provider
+        npi: 
+          type: string 
+          description: NPI of the provider 
+        availability:
+          type: array
+          items:
+            type: object
+            properties:
+              start_time:
+                type: string
+                description: Start time of availability window 
+              end_time:
+                type: string
+                description: End time of availability window 
+              date:
+                type: string
+                description: Date of availability 
+      required:
+        - firstname
+        - lastname
+        - npi 
+        - availability
+  parameters:
+    firstname:
+      name: "firstname"
+      description: "First name of the provider to filter by"
+      in: query
+      required: False
+      schema:
+        type: "string"
+    lastname: 
+      name: "lastname"
+      description: "Last name of the provider to filter by"
+      in: query
+      required: False
+      schema:
+        type: "string"
+paths:
+  /timeslots:
+    get:
+      parameters: 
+      - in: query 
+        name: firstname 
+        required: false 
+        description: "First name of the provider to filter by"
+        schema:
+          type: "string"
+      - in: query  
+        name: lastname  
+        required: false  
+        description: "Last name of the provider to filter by"
+        schema:
+          type: "string"
+      - in: query  
+        name: date   
+        required: false  
+        description: "Available date to filter by"
+        schema: 
+          type: "string" 
+      operationId: "app.get_appointment_slots"
+      summary: "Get a list of available appointment slots"
+      responses:
+        "200":
+          description: "Success"
+  /provider-availability:
+    post:
+      operationId: "app.post_availability"
+      summary: "Submit availability for days and times"
+      requestBody:
+          description: "Availability schedule for a provider"
+          required: True
+          content:
+            application/json:
+              schema:
+                x-body-name: "data"
+                $ref: "#/components/schemas/Availability"
+      responses:
+        "201":
+          description: "Successfully submitted availability"
+

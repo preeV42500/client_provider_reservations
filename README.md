@@ -1,4 +1,8 @@
-# Project Name
+## Dependencies
+Install Flask and Flask-SQLAlchemy 
+
+## To run the server
+- Start the Flask server by running `python3 app.py` 
 
 ## Assumptions
 
